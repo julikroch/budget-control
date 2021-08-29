@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import Error from './Error';
 
-const Formulario = ({guardarGasto, guardarCrearGasto}) => {
+const Formulario = ({guardarGasto, guardarCrearGasto, restante}) => {
 
     const [nombre, guardarNombre] = useState('');
     const [cantidad, guardarCantidad] = useState(0);
     const [error, guardarError] = useState(false);
+    const [errorRestante, guardarErrorRestante] = useState(false)
 
     const agregarGasto = e => {
         e.preventDefault();
@@ -16,7 +17,13 @@ const Formulario = ({guardarGasto, guardarCrearGasto}) => {
             guardarError(true);
             return;
         }
+        if(cantidad > restante){
+            guardarErrorRestante(true)
+            return;
+        }
+
         guardarError(false);
+        guardarErrorRestante(false);
 
         const gasto = {
             nombre, 
@@ -35,7 +42,8 @@ const Formulario = ({guardarGasto, guardarCrearGasto}) => {
         <form onSubmit={agregarGasto} >
             <h2>Agrega tus gastos aquí</h2>
 
-            { error ? <Error mensaje="Ambos campos son obligatorios o Presupuesto Incorrecto" /> : null }
+            { error ? <Error mensaje="Ambos campos son obligatorios" /> : null }
+            { errorRestante ? <Error mensaje="El gasto no puede superar al presupuesto restante" /> : null }
 
             <div className="campo">
                 <label>Nombre Gasto</label>

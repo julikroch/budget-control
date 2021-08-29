@@ -19,8 +19,9 @@ function App() {
           ...gastos,
           gasto
         ]);
-
+        
         const presupuestoRestante = restante - gasto.cantidad;
+
         guardarRestante(presupuestoRestante);
 
         guardarCrearGasto(false);
@@ -47,6 +48,7 @@ function App() {
                           <Formulario 
                             guardarGasto={guardarGasto}
                             guardarCrearGasto={guardarCrearGasto}
+                            restante={restante}
                           />
                       </div>
 
