@@ -11,6 +11,9 @@ const Formulario = ({guardarGasto, guardarCrearGasto, restante}) => {
     const [errorRestante, guardarErrorRestante] = useState(false)
 
     const agregarGasto = e => {
+        guardarError(false);
+        guardarErrorRestante(false);
+
         e.preventDefault();
 
         if(cantidad < 1 || isNaN( cantidad) || nombre.trim() === '') {
@@ -42,8 +45,8 @@ const Formulario = ({guardarGasto, guardarCrearGasto, restante}) => {
         <form onSubmit={agregarGasto} >
             <h2>Agrega tus gastos aquí</h2>
 
-            { error ? <Error mensaje="Ambos campos son obligatorios" /> : null }
-            { errorRestante ? <Error mensaje="El gasto no puede superar al presupuesto restante" /> : null }
+            { error && <Error mensaje="Ambos campos son obligatorios" /> }
+            { errorRestante && <Error mensaje="El gasto no puede superar al presupuesto restante" /> }
 
             <div className="campo">
                 <label>Nombre Gasto</label>
@@ -61,21 +64,22 @@ const Formulario = ({guardarGasto, guardarCrearGasto, restante}) => {
                 <input 
                     type="number"
                     className="u-full-width"
-                    placeholder="Ej. 300"
+                    placeholder="Ej. $300"
                     value={cantidad}
                     onChange={e => guardarCantidad( parseInt( e.target.value, 10 ) )}
                 />
             </div>
 
-            <input
-                type="submit"
-                className="button-primary u-full-width"
-                value="Agregar Gasto"
-            />
-
+            { restante > 0 ? 
+                <input
+                    type="submit"
+                    className="button-primary u-full-width"
+                    value="Agregar Gasto"
+                />
+                : null
+            }
         </form>
-
-     );
+    );
 }
 
 Formulario.propTypes = {
